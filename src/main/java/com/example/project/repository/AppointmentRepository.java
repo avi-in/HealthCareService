@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.project.Model.Appointment;
 
-public interface AppointmentRepository extends JpaRepository<Appointment,String>{
+import java.util.List;
 
+public interface AppointmentRepository extends JpaRepository<Appointment,String>{
+            List<Appointment> findByPatientId(String patientId);
 }

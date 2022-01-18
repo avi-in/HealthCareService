@@ -77,6 +77,7 @@ public class ApplicationUserController {
         HashMap<String, String> map = new HashMap<>();
         map.put("message", "Registration successfully");
         map.put("token", token);
+        map.put("id",u.getUser_name());
        return map;
     }
 

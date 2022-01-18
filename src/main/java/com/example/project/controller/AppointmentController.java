@@ -30,6 +30,13 @@ public class AppointmentController {
         return aRepository.findAll();
     }
 
+
+    @GetMapping("/appointment/list/{patientId}")
+    public List<Appointment> getAllAppointmentForParticularPatientId(@PathVariable(value="patientId") String patientId) {
+
+        return aRepository.findByPatientId(patientId);
+    }
+
     @GetMapping("/appointment/view/{id}")
     public ResponseEntity<Appointment> getAppointmentById(@PathVariable(value = "id") Long Id){
         Optional<Appointment> p = aRepository.findById(String.valueOf(Id));
