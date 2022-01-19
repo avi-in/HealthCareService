@@ -42,7 +42,7 @@ public class PatientController {
 
 
     @DeleteMapping("/patients/delete/{id}")
-    public Map<String, Boolean> deleteEmployee(@PathVariable(value = "id") String Id){
+    public Map<String, Boolean> deletePatientById(@PathVariable(value = "id") String Id){
         Optional<Patient> p = pRepository.findById(Id);
         pRepository.delete(p.get());
         Map<String, Boolean> response = new HashMap<>();

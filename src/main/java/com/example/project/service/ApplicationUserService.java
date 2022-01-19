@@ -16,6 +16,7 @@ import com.example.project.Model.ApplicationUser;
 import com.example.project.repository.ApplicationUserRepository;
 import com.example.project.security.JwtUtil;
 
+import java.util.Optional;
 
 
 @Service
@@ -26,9 +27,12 @@ public class ApplicationUserService {
     @Autowired
     ApplicationUserRepository uRepository;
 
-    public void saveUser(ApplicationUser user){
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        uRepository.save(user);
+
+    public ApplicationUser saveUser(ApplicationUser applicationUser){
+
+            applicationUser.setPassword(bCryptPasswordEncoder.encode(applicationUser.getPassword()));
+            return uRepository.save(applicationUser);
+
     }
 }
 

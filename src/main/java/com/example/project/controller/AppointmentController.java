@@ -21,8 +21,10 @@ public class AppointmentController {
 
     @PostMapping("/appointment/register")
     public ResponseEntity<String> registerAppointment(@RequestBody Appointment a) {
-        aRepository.save(a);
-        return ResponseEntity.ok().body("Booking successfully");
+        Appointment app= aRepository.save(a);
+        if(app!=null)
+           return ResponseEntity.ok().body("Booking successfully");
+        return ResponseEntity.status(500).body("Booking failure");
     }
 
     @GetMapping("/appointment/list")
