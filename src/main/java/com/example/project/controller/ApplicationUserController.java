@@ -19,12 +19,13 @@ import org.springframework.web.bind.annotation.*;
 import com.example.project.Model.ApplicationUser;
 import com.example.project.service.ApplicationUserService;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class ApplicationUserController {
 
     @Autowired
@@ -46,7 +47,7 @@ public class ApplicationUserController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody ApplicationUser u) {
+    public ResponseEntity<Object> registerUser(@RequestBody ApplicationUser u) {
         String email="";
         Optional<ApplicationUser> au=uRepository.findById(u.getUser_name());
            if(au.isPresent()) {
@@ -57,15 +58,15 @@ public class ApplicationUserController {
                email = "";
            }
            if( u.getUser_email().equals(email))
-                  return ResponseEntity.status(422).body("Password or username policy failed");
+                  return ResponseEntity.status(422).body(Collections.singletonMap("message","Password or username policy failed"));
            us.saveUser(u);
-           return ResponseEntity.ok().body("Registration successfully");
+           return ResponseEntity.ok().body(Collections.singletonMap("message","Registration successfully"));
        // return ResponseEntity.status(422).body("Password or username policy failed");
     }
 
 
     @PostMapping("/signin")
-    public /*ResponseEntity<JSONObject> */ Map<String, String> authenticate(@RequestBody ApplicationUser u) throws Exception {
+    public ResponseEntity< Map<String, String>> authenticate(@RequestBody ApplicationUser u) throws Exception {
         HashMap<String, String> map = new HashMap<>();
         final UserDetails userDetails = userAuthService.loadUserByUsername(u.getUser_name());
         try {
@@ -75,7 +76,7 @@ public class ApplicationUserController {
 
         } catch (BadCredentialsException e) {
             map.put("message","Invalid username or password");
-            return map;
+            return ResponseEntity.status(401).body(map);
            // throw new Exception("INVALID_CREDENTIALS", e);
         }
 
@@ -91,7 +92,7 @@ public class ApplicationUserController {
         map.put("message", "Authentication successful!");
         map.put("token", token);
         map.put("id",u.getUser_name());
-       return map;
+       return ResponseEntity.ok().body(map);
     }
 
 
@@ -101,7 +102,7 @@ public class ApplicationUserController {
         if(u.isPresent())
            return ResponseEntity.ok().body(u.get());
         else
-            return ResponseEntity.status(500).body("User not exists");
+            return ResponseEntity.status(500).body(Collections.singletonMap("message","User not exists"));
     }
 
    @GetMapping("/editprofile/{userId}")
@@ -117,7 +118,7 @@ public class ApplicationUserController {
             return ResponseEntity.ok(updatedUser);
         }
         else {
-            return ResponseEntity.status(500).body("user not exists with given Id");
+            return ResponseEntity.status(500).body(Collections.singletonMap("message","user not exists with given Id"));
         }
     }
 

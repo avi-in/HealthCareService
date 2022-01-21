@@ -1,9 +1,6 @@
 package com.example.project.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import com.example.project.repository.PatientRepository;
 import org.json.simple.JSONObject;
@@ -24,9 +21,9 @@ public class PatientController {
 
 
     @PostMapping("/patients/register")
-    public ResponseEntity<String> registerPatient(@RequestBody Patient patient) {
+    public ResponseEntity<Object> registerPatient(@RequestBody Patient patient) {
         pRepository.save(patient);
-        return ResponseEntity.ok().body("Registration successfully");
+        return ResponseEntity.ok().body(Collections.singletonMap("message","Registration successfully"));
     }
 
     @GetMapping("/patients/list")
